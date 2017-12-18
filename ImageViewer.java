@@ -25,7 +25,7 @@ public class ImageViewer
     private static final String VERSION = "Version 3.1";
     private static JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
 
-    // fields:
+    // fields:축
     private JFrame frame;
     private ImagePanel imagePanel;
     private JLabel filenameLabel;
@@ -36,6 +36,10 @@ public class ImageViewer
     
     private List<Filter> filters;
     
+    
+    public static void main(String[] args){
+        new ImageViewer();
+    }
     /**
      * Create an ImageViewer and display its GUI on screen.
      */
@@ -74,7 +78,7 @@ public class ImageViewer
         imagePanel.setImage(currentImage);
         setButtonsEnabled(true);
         showFilename(selectedFile.getPath());
-        showStatus("File loaded.");
+        showStatus("파일 불러와짐");
         frame.pack();
     }
 
@@ -125,10 +129,10 @@ public class ImageViewer
         if(currentImage != null) {
             filter.apply(currentImage);
             frame.repaint();
-            showStatus("Applied: " + filter.getName());
+            showStatus("파일 경로: " + filter.getName());
         }
         else {
-            showStatus("No image loaded.");
+            showStatus("이미지 없음.");
         }
     }
 
@@ -207,10 +211,10 @@ public class ImageViewer
     private void showFilename(String filename)
     {
         if(filename == null) {
-            filenameLabel.setText("No file displayed.");
+            filenameLabel.setText("파일을 선택해주세요.");
         }
         else {
-            filenameLabel.setText("File: " + filename);
+            filenameLabel.setText("파일 : " + filename);
         }
     }
     
@@ -255,6 +259,10 @@ public class ImageViewer
         filterList.add(new GrayScaleFilter("Grayscale"));
         filterList.add(new EdgeFilter("Edge Detection"));
         filterList.add(new FishEyeFilter("Fish Eye"));
+        //추가 됨
+        filterList.add(new GaussianFilter("Gaussian Blur"));
+        filterList.add(new HighpassFilter("Highpass"));
+        filterList.add(new UnsharpFilter("Unsharp"));
        
         return filterList;
     }
@@ -291,11 +299,11 @@ public class ImageViewer
         JPanel toolbar = new JPanel();
         toolbar.setLayout(new GridLayout(0, 1));
         
-        smallerButton = new JButton("Smaller");
+        smallerButton = new JButton("이미지 작게");
         smallerButton.addActionListener(e -> makeSmaller());
         toolbar.add(smallerButton);
         
-        largerButton = new JButton("Larger");
+        largerButton = new JButton("이미지 크게");
         largerButton.addActionListener(e -> makeLarger());
         toolbar.add(largerButton);
 
@@ -312,6 +320,9 @@ public class ImageViewer
         
         // place the frame at the center of the screen and show
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        //추가됨
+        frame.setSize(900, 600);
+        //추가됨
         frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
         frame.setVisible(true);
     }
@@ -333,34 +344,34 @@ public class ImageViewer
         JMenuItem item;
         
         // create the File menu
-        menu = new JMenu("File");
+        menu = new JMenu("파일");
         menubar.add(menu);
         
-        item = new JMenuItem("Open...");
+        item = new JMenuItem("열기...");
             item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, SHORTCUT_MASK));
             item.addActionListener(e -> openFile());
         menu.add(item);
 
-        item = new JMenuItem("Close");
+        item = new JMenuItem("파일제거");
             item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, SHORTCUT_MASK));
             item.addActionListener(e -> close());
         menu.add(item);
         menu.addSeparator();
 
-        item = new JMenuItem("Save As...");
+        item = new JMenuItem("다른이름으로 저장");
             item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, SHORTCUT_MASK));
             item.addActionListener(e -> saveAs());
         menu.add(item);
         menu.addSeparator();
         
-        item = new JMenuItem("Quit");
+        item = new JMenuItem("닫기");
             item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, SHORTCUT_MASK));
             item.addActionListener(e -> quit());
         menu.add(item);
 
 
         // create the Filter menu
-        menu = new JMenu("Filter");
+        menu = new JMenu("필터");
         menubar.add(menu);
         
         for(Filter filter : filters) {
@@ -370,10 +381,10 @@ public class ImageViewer
          }
 
         // create the Help menu
-        menu = new JMenu("Help");
+        menu = new JMenu("도움말");
         menubar.add(menu);
         
-        item = new JMenuItem("About ImageViewer...");
+        item = new JMenuItem("ImageViewer에 대하여");
             item.addActionListener(e -> showAbout());
         menu.add(item);
 
