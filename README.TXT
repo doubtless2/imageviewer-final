@@ -1,4 +1,11 @@
-Project "imageviewer-final" (version 3.1)
+b489059   이현식
+b489052   이원영 
+
+마스크배열없이  간단한 함수로만 이루어진 필터 오픈소스에 GUI  한글화하고  메인함수를
+ 추가,마스크배열을 이용한 필터를 3가지(Gaussian,Highpass,Unsharp)추가하였습니다.
+ 
+ 
+ Project "imageviewer-final" (version 3.1)
 Authors: David Barnes and Michael Kölling
 
 This project is part of the material for the book
